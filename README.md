@@ -66,29 +66,72 @@ sciq-backend/
 ├── src/
 │   └── main/
 │       ├── java/com/sciq/
-│       │   ├── controller/         # REST API 컨트롤러
-│       │   ├── service/            # 비즈니스 로직 처리
-│       │   ├── repository/         # 데이터베이스 접근 계층 (JPA 등)
-│       │   ├── entity/             # JPA 엔티티 클래스
-│       │   ├── dto/                # 데이터 전송 객체 (Request, Response)
-│       │   ├── config/             # Spring 설정 (Security, CORS, Swagger 등)
-│       │   ├── exception/          # 커스텀 예외, 전역 예외 핸들러
-│       │   └── SciqApplication.java# Spring Boot 애플리케이션 실행 파일
+│       │   ├── controller/               # 공통/홈 컨트롤러 등 전역 API (선택적 존재)
+│       │
+│       │   ├── config/                   # Spring Security, CORS, Swagger 등 설정 클래스
+│       │   ├── exception/                # 전역 예외 처리 핸들러, 예외 메시지, 상태 코드
+│       │   ├── global/exception/         # 도메인별 커스텀 예외 정의
+│       │
+│       │   ├── feedback/                 # 피드백 도메인
+│       │   │   ├── dto/
+│       │   │   ├── entity/
+│       │   │   ├── repository/
+│       │   │   ├── service/
+│       │   │   └── processor/
+│       │
+│       │   ├── debate/                   # 토론 도메인 (comment, stance 포함 가능)
+│       │   │   ├── dto/
+│       │   │   ├── entity/
+│       │   │   ├── repository/
+│       │   │   └── service/
+│       │
+│       │   ├── search/                   # 검색 도메인
+│       │   │   ├── dto/
+│       │   │   ├── entity/
+│       │   │   ├── repository/
+│       │   │   └── service/
+│       │
+│       │   ├── question/                 # 질문 도메인
+│       │   │   ├── entity/
+│       │   │   └── repository/
+│       │
+│       │   ├── user/                     # 사용자 도메인
+│       │   │   ├── controller/
+│       │   │   ├── dto/
+│       │   │   ├── entity/
+│       │   │   ├── repository/
+│       │   │   └── service/
+│       │
+│       │   ├── security/                 # 인증/인가 전체 담당
+│       │   │   ├── auth/                 # 인증 컨트롤러/서비스 (로그인, 회원가입)
+│       │   │   │   ├── AuthController.java
+│       │   │   │   └── AuthService.java
+│       │   │   ├── dto/                  # AuthDto, TokenDto 등
+│       │   │   ├── jwt/                  # 필터, Provider, 인증 핸들러 등
+│       │   │   │   ├── JwtAuthenticationFilter.java
+│       │   │   │   ├── TokenProvider.java
+│       │   │   │   └── UserPrincipal.java
+│       │   │   └── CustomUserDetailsService.java
+│       │
+│       │   ├── utils/                    # 공용 도우미 유틸리티 (예: ApiUtils)
+│       │   └── SciqApplication.java      # Spring Boot 메인 실행 클래스
 │
 │       └── resources/
-│           ├── application.yml     # 환경 설정 파일
-│           └── static/             # 정적 리소스 (html, css, js 등)
+│           ├── application.yml           # 환경 설정
+│           └── static/                   # 정적 리소스 (HTML, JS, 이미지 등)
+│
+├── test/
+│   └── java/com/sciq/
+│       └── SciqApplicationTests.java     # 통합 테스트 클래스
 │
 ├── docs/
-│   ├── api-spec.yaml               # Swagger/OpenAPI 명세서
-│   └── 기획서.md                   # 프로젝트 기획 문서
+│   ├── api-spec.yaml                     # OpenAPI (Swagger) 명세
+│   └── 기획서.md                         # 기능 정의 및 스펙 기획 문서
 │
-├── README.md                       # 프로젝트 소개 문서
-├── build.gradle                    # Gradle 빌드 스크립트
-└── settings.gradle                 # Gradle 설정 파일
-
+├── README.md                             # 프로젝트 설명서
+├── build.gradle                          # Gradle 빌드 설정
+├── settings.gradle
 ```
-
 ---
 
 ## 기타
