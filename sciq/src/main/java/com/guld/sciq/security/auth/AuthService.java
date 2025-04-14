@@ -36,30 +36,29 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public AuthDto.DefaultRequest signup(AuthDto.DefaultRequest defaultRequest) {
-        if (userService.existsByEmail(defaultRequest.getEmail())) {
+    public User signup(AuthDto.SignUpRequest signUpRequest) {
+        if (userService.existsByEmail(signUpRequest.getEmail())) {
             throw new UserAlreadyExistsException(ErrorMessage.USER_ALREADY_EXIST);
         }
 
-        User user = defaultRequest.toEntity(passwordEncoder);
+        User user = signUpRequest.toEntity(passwordEncoder);
 
         UserPrincipal.create(user);
 
-        return AuthDto.DefaultRequest.toDto(userRepository.save(user));
-
+        return userRepository.save(user);
     }
 
     @Transactional
-    public TokenDto.Response login(AuthDto.DefaultRequest defaultRequest) {
+    public TokenDto.Response login(AuthDto.SignUpRequest signUpRequest) {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
-        UsernamePasswordAuthenticationToken authenticationToken = defaultRequest.toAuthentication();
+        UsernamePasswordAuthenticationToken authenticationToken = signUpRequest.toAuthentication();
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. UserPrincipal 생성 및 Authentication에 설정
-        User user = userRepository.findByEmail(defaultRequest.getEmail())
+        User user = userRepository.findByEmail(signUpRequest.getEmail())
                 .orElseThrow(() -> new NoSuchElementException(ErrorMessage.USER_NOT_FOUND));
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         authentication = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());

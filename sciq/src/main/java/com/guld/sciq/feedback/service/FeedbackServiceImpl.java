@@ -1,0 +1,75 @@
+package com.guld.sciq.feedback.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.guld.sciq.feedback.dto.FeedbackCreateDto;
+import com.guld.sciq.feedback.dto.FeedbackDto;
+import com.guld.sciq.feedback.dto.FeedbackUpdateDto;
+import com.guld.sciq.feedback.processor.FeedbackProcessor;
+import com.guld.sciq.feedback.repository.FeedbackRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class FeedbackServiceImpl implements FeedbackService {
+    private final FeedbackRepository feedbackRepository;
+    private final FeedbackProcessor feedbackProcessor;
+
+    @Override
+    public FeedbackDto createFeedback(FeedbackCreateDto createDto, Long userId, Long questionId, Long debateId) {
+        return feedbackProcessor.createFeedback(createDto, userId, questionId, debateId);
+    }
+
+    @Override
+    public FeedbackDto getFeedback(Long feedbackId) {
+        return feedbackProcessor.getFeedback(feedbackId);
+    }
+
+    @Override
+    public FeedbackDto updateFeedback(Long feedbackId, FeedbackUpdateDto updateDto, Long userId) {
+        return feedbackProcessor.updateFeedback(feedbackId, updateDto, userId);
+    }
+
+    @Override
+    public void deleteFeedback(Long feedbackId, Long userId) {
+        feedbackProcessor.deleteFeedback(feedbackId, userId);
+    }
+
+    @Override
+    public void markAsHelpful(Long feedbackId, Long userId) {
+        feedbackProcessor.markAsHelpful(feedbackId, userId);
+    }
+    
+    @Override
+    public List<FeedbackDto> getFeedbacksByQuestion(Long questionId) {
+        return feedbackRepository.findByQuestionId(questionId)
+                .stream()
+                .map(FeedbackDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FeedbackDto> getFeedbacksByDebate(Long debateId) {
+        return feedbackRepository.findByDebateId(debateId)
+                .stream()
+                .map(FeedbackDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FeedbackDto> getFeedbacksByUser(Long userId) {
+        return feedbackRepository.findByUserId(userId)
+                .stream()
+                .map(FeedbackDto::from)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public List<FeedbackDto> getTopRatedFeedbacks(Long questionId, int limit) {
+        return null;
+    }
+}

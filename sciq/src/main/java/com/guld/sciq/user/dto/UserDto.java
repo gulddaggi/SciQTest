@@ -1,15 +1,13 @@
 package com.guld.sciq.user.dto;
 
-import com.guld.sciq.user.entity.Prefer;
-import com.guld.sciq.user.entity.Role;
+import com.guld.sciq.user.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 import com.guld.sciq.user.entity.User;
+import com.guld.sciq.user.entity.UserPrefer;
 
 public class UserDto {
 
@@ -23,8 +21,8 @@ public class UserDto {
         private String nickname;
         private String password;
         private String schoolName;
-        private Prefer prefer;
-        private Role role;
+        private UserPrefer prefer;
+        private UserRole userRole;
 
     }
 
@@ -41,14 +39,14 @@ public class UserDto {
         private String prefer;
         private String role;
 
-        public static Response toDto(User user) {
+        public static Response from(User user) {
             return Response.builder()
-                    .name(user.getName())
+                    .name(user.getUserName())
                     .email(user.getEmail())
                     .nickname(user.getNickName())
                     .schoolName(user.getSchoolName())
-                    .prefer(user.getPrefer() != null ? user.getPrefer().name() : null)
-                    .role(user.getRole() != null ? user.getRole().name() : null)
+                    .prefer(user.getPrefer().name())
+                    .role(user.getRole().name())
                     .build();
         }
     }

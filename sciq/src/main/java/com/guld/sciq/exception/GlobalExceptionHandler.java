@@ -1,6 +1,7 @@
 package com.guld.sciq.exception;
 
 import com.guld.sciq.exception.auth.UserAlreadyExistsException;
+import com.guld.sciq.global.exception.*;
 import com.guld.sciq.utils.ApiUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,6 +65,36 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex) {
         return createErrorResponse(HttpStatus.UNAUTHORIZED, ErrorMessage.UNAUTHORIZED_EXCEPTION);
+    }
+
+    @ExceptionHandler(DebateNotFoundException.class)
+    public ResponseEntity<?> handleDebateNotFoundException(DebateNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(DebateCommentNotFoundException.class)
+    public ResponseEntity<?> handleDebateCommentNotFoundException(DebateCommentNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidDebateStatusException.class)
+    public ResponseEntity<?> handleInvalidDebateStatusException(InvalidDebateStatusException ex) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(FeedbackNotFoundException.class)
+    public ResponseEntity<?> handleFeedbackNotFoundException(FeedbackNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(QuestionNotFoundException.class)
+    public ResponseEntity<?> handleQuestionNotFoundException(QuestionNotFoundException ex) {
+        return createErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

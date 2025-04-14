@@ -17,9 +17,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
-import com.guld.sciq.sciq.security.jwt.JwtAccessDeniedHandler;
-import com.guld.sciq.sciq.security.jwt.JwtAuthenticationEntryPoint;
-import com.guld.sciq.sciq.security.jwt.JwtAuthenticationFilter;
+import com.guld.sciq.security.jwt.JwtAccessDeniedHandler;
+import com.guld.sciq.security.jwt.JwtAuthenticationEntryPoint;
+import com.guld.sciq.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor

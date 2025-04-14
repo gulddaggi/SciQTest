@@ -1,5 +1,8 @@
 package com.guld.sciq.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.guld.sciq.config.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,35 +14,42 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
-public class User {
+@Table(name = "user_tb")
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
-
-    @Column(name = "user_name", nullable = false)
-    private String name;
-
+    @JsonIgnore
+    @Column
+    private Long id;
+    
     @Column(nullable = false)
     private String email;
-
+    
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
+    
+    @Column(nullable = false)
+    private String userName;
 
-    @Column(name = "nickname", nullable = false)
-    private String nickName; //닉네임
-
-    @Column(name = "school_name", nullable = true)
+    @Column(nullable = false)
+    private String nickName;
+    
+    @Column(nullable = true)
     private String schoolName;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserPrefer prefer;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private int points = 0;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Prefer prefer;
-
+    private int level = 1;
 }

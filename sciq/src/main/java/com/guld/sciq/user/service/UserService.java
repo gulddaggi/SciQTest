@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 
 import com.guld.sciq.exception.ErrorMessage;
 import com.guld.sciq.user.dto.UserDto;
-import com.guld.sciq.user.entity.Prefer;
 import com.guld.sciq.user.entity.User;
 import com.guld.sciq.user.repository.UserRepository;
 
@@ -36,7 +35,7 @@ public class UserService {
 
     public User getReferenceByEmail(String email) {
         // 실제 엔터티를 로드하지 않고, 프록시 객체를 반환
-        return entityManager.getReference(User.class, findByEmail(email).getUserId());
+        return entityManager.getReference(User.class, findByEmail(email).getId());
     }
 
     public void updateUserAdditionalInfo(String email, UserDto.Request userDto) {

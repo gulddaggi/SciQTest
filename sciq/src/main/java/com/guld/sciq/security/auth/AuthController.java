@@ -23,15 +23,15 @@ public class AuthController {
 
     @Operation(summary = "회원가입", description = "사용자가 회원가입을 진행합니다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody AuthDto.DefaultRequest defaultRequest) {
-        authService.signup(defaultRequest);
-        return ResponseEntity.ok(ApiUtils.success(authService.login(defaultRequest)));
+    public ResponseEntity<?> signup(@RequestBody AuthDto.SignUpRequest signUpRequest) {
+        authService.signup(signUpRequest);
+        return ResponseEntity.ok(ApiUtils.success(authService.login(signUpRequest)));
     }
 
     @Operation(summary = "로그인", description = "사용자가 로그인하여 토큰을 발급받습니다.")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthDto.DefaultRequest defaultRequest) {
-        return ResponseEntity.ok(ApiUtils.success(authService.login(defaultRequest)));
+    public ResponseEntity<?> login(@RequestBody AuthDto.SignUpRequest signUpRequest) {
+        return ResponseEntity.ok(ApiUtils.success(authService.login(signUpRequest)));
     }
 
 
