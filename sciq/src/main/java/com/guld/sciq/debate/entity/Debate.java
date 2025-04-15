@@ -4,6 +4,7 @@ import com.guld.sciq.config.BaseEntity;
 import com.guld.sciq.common.enums.ScienceDisciplineType;
 import com.guld.sciq.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "debate_tb")
-@NoArgsConstructor
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Debate extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +38,7 @@ public class Debate extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DebateStatus status = DebateStatus.PENDING;
+    private DebateStatus status;    
 
     @Column
     private LocalDateTime scheduledStartTime;
@@ -47,44 +50,38 @@ public class Debate extends BaseEntity {
     private Integer durationInMinutes;
 
     @Column(nullable = false)
-    private boolean closed = false;
+    private boolean closed;
 
-    @Builder
-    public Debate(User user, String title, String description, ScienceDisciplineType scienceDiscipline, DebateStatus status,
-                 LocalDateTime scheduledStartTime, LocalDateTime scheduledEndTime,
-                 Integer durationInMinutes, boolean closed) {
-        this.user = user;
-        this.title = title;
-        this.description = description;
-        this.scienceDiscipline = scienceDiscipline;
-        this.status = status;
-        this.scheduledStartTime = scheduledStartTime;
-        this.scheduledEndTime = scheduledEndTime;
-        this.durationInMinutes = durationInMinutes;
-        this.closed = closed;
+    public void update(String title, String description, ScienceDisciplineType scienceDiscipline) {
+            this.title = title;
+            this.description = description;
+            this.scienceDiscipline = scienceDiscipline;
     }
 
-    public void update(String title, String description, ScienceDisciplineType scienceDiscipline, LocalDateTime scheduledStartTime, Integer durationInMinutes) {
-        this.title = title;
-        this.description = description;
-        this.scienceDiscipline = scienceDiscipline;
-        this.scheduledStartTime = scheduledStartTime;
-        this.durationInMinutes = durationInMinutes;
+    public void changeStatus(DebateStatus newStatus) {
+        this.status = newStatus;
     }
 
-    public void setStatus(DebateStatus status) {
-        this.status = status;
+    public void scheduledDebate(LocalDateTime startTime, Integer duration) {
+        this.scheduledStartTime = startTime;
+        this.durationInMinutes = duration;
+        this.scheduledEndTime = startTime.plusMinutes(duration);
     }
 
-    public void setScheduledStartTime(LocalDateTime scheduledStartTime) {
-        this.scheduledStartTime = scheduledStartTime;
+    public void extendDebate(Integer additionalMinutes) {
+        if (this.scheduledEndTime != null) {
+            this.scheduledEndTime = this.scheduledEndTime.plusMinutes(additionalMinutes);
+            this.durationInMinutes += additionalMinutes;
+        }
     }
 
-    public void setDurationInMinutes(Integer durationInMinutes) {
-        this.durationInMinutes = durationInMinutes;
+    public void close() {
+        this.closed = true;
+        this.status = DebateStatus.CLOSED;
     }
 
-    public void setClosed(boolean closed) {
-        this.closed = closed;
+    public void open() {
+        this.closed = false;
+        this.status = DebateStatus.OPEN;
     }
-} 
+}

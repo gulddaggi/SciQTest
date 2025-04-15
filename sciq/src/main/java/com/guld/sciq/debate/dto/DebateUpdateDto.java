@@ -7,7 +7,5 @@ import java.time.LocalDateTime;
 public record DebateUpdateDto(
     String title,
     String description,
-    ScienceDisciplineType scienceDiscipline,
-    LocalDateTime scheduledStartTime,
-    Integer durationInMinutes
-) {} 
+    ScienceDisciplineType scienceDiscipline
+) {}

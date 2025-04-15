@@ -63,9 +63,7 @@ public class DebateProcessor {
         debate.update(
             dto.title(),
             dto.description(),
-            dto.scienceDiscipline(),
-            dto.scheduledStartTime(),
-            dto.durationInMinutes());
+            dto.scienceDiscipline());
         
         return DebateDto.from(debateRepository.save(debate));
     }
