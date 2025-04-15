@@ -3,6 +3,7 @@ package com.guld.sciq.feedback.entity;
 import com.guld.sciq.config.BaseEntity;
 import com.guld.sciq.question.entity.Question;
 import com.guld.sciq.debate.entity.Debate;
+import com.guld.sciq.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +31,7 @@ public class Feedback extends BaseEntity {
     @JoinColumn(name = "debate_id")
     private Debate debate;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column
@@ -53,7 +54,7 @@ public class Feedback extends BaseEntity {
         this.notHelpfulCount++;
     }
 
-    public void updateContent(String content) {
+    public void update(String content) {
         this.content = content;
     }
 } 
