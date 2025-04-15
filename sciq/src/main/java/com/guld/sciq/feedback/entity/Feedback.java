@@ -31,8 +31,9 @@ public class Feedback extends BaseEntity {
     @JoinColumn(name = "debate_id")
     private Debate debate;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column
     private String content;
@@ -41,20 +42,13 @@ public class Feedback extends BaseEntity {
     private int helpfulCount = 0;
 
     @Column
-    private int notHelpfulCount = 0;
-
-    @Column
     private LocalDateTime createdAt;
 
     public void increaseHelpfulCount() {
         this.helpfulCount++;
     }
 
-    public void increaseNotHelpfulCount() {
-        this.notHelpfulCount++;
-    }
-
-    public void update(String content) {
+    public void updateContent(String content) {
         this.content = content;
     }
 } 
