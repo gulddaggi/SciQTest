@@ -1,6 +1,7 @@
 package com.guld.sciq.debate.entity;
 
 import com.guld.sciq.config.BaseEntity;
+import com.guld.sciq.common.enums.ScienceDisciplineType;
 import com.guld.sciq.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -30,6 +31,10 @@ public class Debate extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private ScienceDisciplineType scienceDiscipline;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private DebateStatus status = DebateStatus.PENDING;
 
     @Column
@@ -45,12 +50,13 @@ public class Debate extends BaseEntity {
     private boolean closed = false;
 
     @Builder
-    public Debate(User user, String title, String description, DebateStatus status,
+    public Debate(User user, String title, String description, ScienceDisciplineType scienceDiscipline, DebateStatus status,
                  LocalDateTime scheduledStartTime, LocalDateTime scheduledEndTime,
                  Integer durationInMinutes, boolean closed) {
         this.user = user;
         this.title = title;
         this.description = description;
+        this.scienceDiscipline = scienceDiscipline;
         this.status = status;
         this.scheduledStartTime = scheduledStartTime;
         this.scheduledEndTime = scheduledEndTime;
@@ -58,9 +64,10 @@ public class Debate extends BaseEntity {
         this.closed = closed;
     }
 
-    public void update(String title, String description, LocalDateTime scheduledStartTime, Integer durationInMinutes) {
+    public void update(String title, String description, ScienceDisciplineType scienceDiscipline, LocalDateTime scheduledStartTime, Integer durationInMinutes) {
         this.title = title;
         this.description = description;
+        this.scienceDiscipline = scienceDiscipline;
         this.scheduledStartTime = scheduledStartTime;
         this.durationInMinutes = durationInMinutes;
     }
