@@ -11,6 +11,7 @@ import com.guld.sciq.debate.dto.DebateDto;
 import com.guld.sciq.debate.dto.DebateCreateDto;
 import com.guld.sciq.debate.dto.DebateUpdateDto;
 import com.guld.sciq.debate.entity.DebateStatus;
+import com.guld.sciq.debate.processor.DebateProcessor;
 import com.guld.sciq.debate.repository.DebateRepository;
 
 @Service
