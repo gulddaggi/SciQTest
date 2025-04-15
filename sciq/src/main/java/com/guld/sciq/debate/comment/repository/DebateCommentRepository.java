@@ -1,10 +1,10 @@
-package com.guld.sciq.debate.repository;
-
-import com.guld.sciq.debate.entity.DebateComment;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+package com.guld.sciq.debate.comment.repository;
 
 import java.util.List;
+
+import com.guld.sciq.debate.comment.entity.DebateComment;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DebateCommentRepository extends JpaRepository<DebateComment, Long> {

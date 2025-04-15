@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
-import com.guld.sciq.exception.ErrorMessage;
+import com.guld.sciq.common.error.ErrorMessage;
 import com.guld.sciq.exception.auth.InvalidTokenException;
 import com.guld.sciq.security.dto.TokenDto;
 import com.guld.sciq.user.entity.RefreshToken;

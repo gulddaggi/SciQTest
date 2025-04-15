@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
-import com.guld.sciq.exception.ErrorMessage;
+import com.guld.sciq.common.error.ErrorMessage;
 import com.guld.sciq.exception.auth.InvalidTokenException;
 import com.guld.sciq.exception.auth.UserAlreadyExistsException;
 import com.guld.sciq.security.UserPrincipal;

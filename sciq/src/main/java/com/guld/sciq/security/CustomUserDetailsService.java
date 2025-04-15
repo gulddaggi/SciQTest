@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
 
-import com.guld.sciq.exception.ErrorMessage;
+import com.guld.sciq.common.error.ErrorMessage;
 import com.guld.sciq.user.repository.UserRepository;
 
 @Service

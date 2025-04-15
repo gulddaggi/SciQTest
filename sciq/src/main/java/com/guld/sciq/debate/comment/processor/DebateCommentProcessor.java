@@ -1,16 +1,17 @@
-package com.guld.sciq.debate.processor;
+package com.guld.sciq.debate.comment.processor;
 
 import org.springframework.stereotype.Component;
 
-import com.guld.sciq.debate.dto.DebateCommentCreateDto;
-import com.guld.sciq.debate.dto.DebateCommentDto;
+import com.guld.sciq.common.error.ErrorMessage;
+import com.guld.sciq.debate.comment.dto.DebateCommentCreateDto;
+import com.guld.sciq.debate.comment.dto.DebateCommentDto;
+import com.guld.sciq.debate.comment.entity.DebateComment;
+import com.guld.sciq.debate.comment.repository.DebateCommentRepository;
+import com.guld.sciq.debate.dto.DebateCommentUpdateDto;
 import com.guld.sciq.debate.entity.Debate;
-import com.guld.sciq.debate.entity.DebateComment;
-import com.guld.sciq.debate.repository.DebateCommentRepository;
 import com.guld.sciq.debate.repository.DebateRepository;
 import com.guld.sciq.global.exception.DebateCommentNotFoundException;
 import com.guld.sciq.global.exception.DebateNotFoundException;
-import com.guld.sciq.global.exception.ErrorMessage;
 import com.guld.sciq.global.exception.UnauthorizedException;
 
 import lombok.RequiredArgsConstructor;
@@ -21,17 +22,17 @@ public class DebateCommentProcessor {
     private final DebateCommentRepository debateCommentRepository;
     private final DebateRepository debateRepository;
 
-    public DebateCommentDto createComment(DebateCommentCreateDto createDto, Long debateId, Long userId) {
+    public DebateCommentDto createComment(DebateCommentCreateDto createDto, Long debateId, Long userId, String userNickName) {
         Debate debate = debateRepository.findById(debateId)
                 .orElseThrow(() -> new DebateNotFoundException(ErrorMessage.DEBATE_NOT_FOUND));
 
         DebateComment comment = DebateComment.builder()
                 .debate(debate)
                 .userId(userId)
-                .userNickName(createDto.userNickName())
-                .content(createDto.content())
-                .stance(createDto.stance())
-                .likes(0)
+                .userNickName(userNickName)
+                .content(createDto.getContent())
+                .stance(createDto.getStance())
+                .likeCnt(0)
                 .build();
 
         DebateComment savedComment = debateCommentRepository.save(comment);
@@ -44,7 +45,7 @@ public class DebateCommentProcessor {
         return DebateCommentDto.from(comment);
     }
 
-    public DebateCommentDto updateComment(Long commentId, DebateCommentCreateDto updateDto, Long userId) {
+    public DebateCommentDto updateComment(Long commentId, DebateCommentUpdateDto updateDto, Long userId) {
         DebateComment comment = debateCommentRepository.findById(commentId)
                 .orElseThrow(() -> new DebateCommentNotFoundException(ErrorMessage.DEBATE_COMMENT_NOT_FOUND));
 
@@ -52,7 +53,7 @@ public class DebateCommentProcessor {
             throw new UnauthorizedException(ErrorMessage.DEBATE_COMMENT_NOT_OWNER);
         }
 
-        comment.update(updateDto.content(), updateDto.stance());
+        comment.updateContent(updateDto.content());
         DebateComment updatedComment = debateCommentRepository.save(comment);
         return DebateCommentDto.from(updatedComment);
     }
@@ -78,7 +79,7 @@ public class DebateCommentProcessor {
     public void unlikeComment(Long commentId, Long userId) {
         DebateComment comment = debateCommentRepository.findById(commentId)
                 .orElseThrow(() -> new DebateCommentNotFoundException(ErrorMessage.DEBATE_COMMENT_NOT_FOUND));
-        comment.decreseLikes();
+        comment.decreaseLikes();
         debateCommentRepository.save(comment);
     }
 } 

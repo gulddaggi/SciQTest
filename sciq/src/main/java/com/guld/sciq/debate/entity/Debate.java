@@ -84,4 +84,8 @@ public class Debate extends BaseEntity {
         this.closed = false;
         this.status = DebateStatus.OPEN;
     }
+
+    public void updateStatus(DebateStatus status) {
+        this.status = status;
+    }
 }

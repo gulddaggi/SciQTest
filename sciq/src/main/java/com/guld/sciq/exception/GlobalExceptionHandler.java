@@ -1,5 +1,6 @@
 package com.guld.sciq.exception;
 
+import com.guld.sciq.common.error.ErrorMessage;
 import com.guld.sciq.exception.auth.UserAlreadyExistsException;
 import com.guld.sciq.global.exception.*;
 import com.guld.sciq.utils.ApiUtils;

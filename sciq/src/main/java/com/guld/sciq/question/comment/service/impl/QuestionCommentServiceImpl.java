@@ -1,14 +1,18 @@
-package com.guld.sciq.question.service;
+package com.guld.sciq.question.comment.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.guld.sciq.question.dto.QuestionCommentCreateDto;
-import com.guld.sciq.question.dto.QuestionCommentDto;
-import com.guld.sciq.question.processor.QuestionCommentProcessor;
-import com.guld.sciq.question.repository.QuestionCommentRepository;
+import com.guld.sciq.question.comment.dto.QuestionCommentCreateDto;
+import com.guld.sciq.question.comment.dto.QuestionCommentDto;
+import com.guld.sciq.question.comment.dto.QuestionCommentUpdateDto;
+import com.guld.sciq.question.comment.processor.QuestionCommentProcessor;
+import com.guld.sciq.question.comment.repository.QuestionCommentRepository;
+import com.guld.sciq.question.comment.service.QuestionCommentService;
+import com.guld.sciq.question.dto.QuestionUpdateDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,31 +23,37 @@ public class QuestionCommentServiceImpl implements QuestionCommentService {
     private final QuestionCommentRepository questionCommentRepository;
 
     @Override
+    @Transactional
     public QuestionCommentDto createComment(QuestionCommentCreateDto createDto, Long questionId, Long userId) {
         return questionCommentProcessor.createComment(createDto, questionId, userId);
     }
 
     @Override
-    public QuestionCommentDto getComment(Integer commentId) {
+    @Transactional(readOnly = true)
+    public QuestionCommentDto getComment(Long commentId) {
         return questionCommentProcessor.getComment(commentId);
     }
 
     @Override
-    public QuestionCommentDto updateComment(Integer commentId, QuestionCommentCreateDto updateDto, Long userId) {
+    @Transactional
+    public QuestionCommentDto updateComment(Long commentId, QuestionCommentUpdateDto updateDto, Long userId) {
         return questionCommentProcessor.updateComment(commentId, updateDto, userId);
     }
 
     @Override
-    public void deleteComment(Integer commentId, Long userId) {
+    @Transactional
+    public void deleteComment(Long commentId, Long userId) {
         questionCommentProcessor.deleteComment(commentId, userId);
     }
 
     @Override
-    public void likeComment(Integer commentId, Long userId) {
+    @Transactional
+    public void likeComment(Long commentId, Long userId) {
         questionCommentProcessor.likeComment(commentId, userId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<QuestionCommentDto> getCommentsByQuestion(Long questionId) {
         return questionCommentRepository.findByQuestionId(questionId)
                 .stream()
@@ -52,6 +62,7 @@ public class QuestionCommentServiceImpl implements QuestionCommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<QuestionCommentDto> getCommentsByUser(Long userId) {
         return questionCommentRepository.findByUserId(userId)
                 .stream()

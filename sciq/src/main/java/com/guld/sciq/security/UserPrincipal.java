@@ -14,13 +14,15 @@ import com.guld.sciq.user.entity.User;
 public class UserPrincipal implements UserDetails {
     private final Long id;
     private final String email;
+    private final String nickName;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String email, String nickName, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
-        this.password = password;
+		this.nickName = nickName;
+		this.password = password;
         this.authorities = authorities;
     }
 
@@ -32,6 +34,7 @@ public class UserPrincipal implements UserDetails {
         return new UserPrincipal(
                 user.getId(),
                 user.getEmail(),
+                user.getNickName(),
                 user.getPassword(),
                 authorities
         );

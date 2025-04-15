@@ -1,4 +1,4 @@
-package com.guld.sciq.feedback.service;
+package com.guld.sciq.feedback.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +10,7 @@ import com.guld.sciq.feedback.dto.FeedbackDto;
 import com.guld.sciq.feedback.dto.FeedbackUpdateDto;
 import com.guld.sciq.feedback.processor.FeedbackProcessor;
 import com.guld.sciq.feedback.repository.FeedbackRepository;
+import com.guld.sciq.feedback.service.FeedbackService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,8 +21,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final FeedbackProcessor feedbackProcessor;
 
     @Override
-    public FeedbackDto createFeedback(FeedbackCreateDto createDto, Long userId, Long questionId, Long debateId) {
-        return feedbackProcessor.createFeedback(createDto, userId, questionId, debateId);
+    public FeedbackDto createFeedback(FeedbackCreateDto createDto, Long userId) {
+        return feedbackProcessor.createFeedback(createDto, userId);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public void markAsHelpful(Long feedbackId, Long userId) {
         //TODO: 유저도 트래킹 할건지? 한번만 가능하게 할건지?
-        feedbackProcessor.markHelpful(feedbackId);
+        feedbackProcessor.markHelpful(feedbackId, userId);
     }
     
     @Override

@@ -3,6 +3,7 @@ package com.guld.sciq.debate.service;
 import com.guld.sciq.debate.dto.DebateCreateDto;
 import com.guld.sciq.debate.dto.DebateDto;
 import com.guld.sciq.debate.dto.DebateUpdateDto;
+import com.guld.sciq.debate.entity.DebateStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,8 +21,7 @@ public interface DebateService {
     
     // 시간 관리
     void scheduleDebate(Long debateId, LocalDateTime startTime, Integer duration);
-    void extendDebate(Long debateId, Integer additionalMinutes);
-    void updateDebateSchedule(Long debateId, LocalDateTime newStartTime, Integer newDuration);
+    void extendDebate(Long debateId, Integer additionalMinutes, Long userId);
     
     // 조회
     List<DebateDto> getOpenDebates();
@@ -29,4 +29,8 @@ public interface DebateService {
     List<DebateDto> getScheduledDebates();
     List<DebateDto> getOngoingDebates();
     List<DebateDto> getDebatesByUser(Long userId);
+    
+    // 추가된 메서드
+    List<DebateDto> getAllDebates();
+    DebateDto updateDebateStatus(Long debateId, DebateStatus status, Long userId);
 }

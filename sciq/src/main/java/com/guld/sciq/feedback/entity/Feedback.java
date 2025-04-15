@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "feedback_tb")
@@ -21,7 +23,7 @@ import java.time.LocalDateTime;
 public class Feedback extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long feedbackId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
@@ -44,8 +46,19 @@ public class Feedback extends BaseEntity {
     @Column
     private LocalDateTime createdAt;
 
+    @Column
+    private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "feedback", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FeedbackLike> likes = new ArrayList<>();
     public void increaseHelpfulCount() {
         this.helpfulCount++;
+    }
+
+    public void decreaseHelpfulCount() {
+        if (this.helpfulCount > 0) {
+            this.helpfulCount--;
+        }
     }
 
     public void updateContent(String content) {

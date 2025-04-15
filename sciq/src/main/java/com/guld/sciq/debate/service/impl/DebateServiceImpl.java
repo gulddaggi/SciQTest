@@ -1,4 +1,4 @@
-package com.guld.sciq.debate.service;
+package com.guld.sciq.debate.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import com.guld.sciq.debate.dto.DebateDto;
+import com.guld.sciq.common.error.ErrorMessage;
 import com.guld.sciq.debate.dto.DebateCreateDto;
 import com.guld.sciq.debate.dto.DebateUpdateDto;
 import com.guld.sciq.debate.entity.DebateStatus;
 import com.guld.sciq.debate.processor.DebateProcessor;
 import com.guld.sciq.debate.repository.DebateRepository;
+import com.guld.sciq.debate.service.DebateService;
+import com.guld.sciq.debate.entity.Debate;
 
 @Service
 @RequiredArgsConstructor
@@ -56,13 +59,8 @@ public class DebateServiceImpl implements DebateService {
     }
 
     @Override
-    public void extendDebate(Long debateId, Integer additionalMinutes) {
-        debateProcessor.extendDebate(debateId, additionalMinutes);
-    }
-
-    @Override
-    public void updateDebateSchedule(Long debateId, LocalDateTime newStartTime, Integer newDuration) {
-        debateProcessor.updateDebateSchedule(debateId, newStartTime, newDuration);
+    public void extendDebate(Long debateId, Integer additionalMinutes, Long userId) {
+        debateProcessor.extendDebate(debateId, additionalMinutes, userId);
     }
 
     @Override
@@ -105,5 +103,24 @@ public class DebateServiceImpl implements DebateService {
                 .stream()
                 .map(DebateDto::from)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DebateDto> getAllDebates() {
+        return debateRepository.findAll().stream()
+                .map(DebateDto::from)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public DebateDto updateDebateStatus(Long debateId, DebateStatus status, Long userId) {
+        Debate debate = debateRepository.findById(debateId)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.DEBATE_NOT_FOUND));
+
+        if (!debate.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException(ErrorMessage.DEBATE_NOT_AUTHORIZED);
+        }
+
+        debate.updateStatus(status);
+        return DebateDto.from(debateRepository.save(debate));
     }
 }

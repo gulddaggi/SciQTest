@@ -1,14 +1,16 @@
-package com.guld.sciq.debate.service;
+package com.guld.sciq.debate.comment.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.guld.sciq.debate.dto.DebateCommentCreateDto;
-import com.guld.sciq.debate.dto.DebateCommentDto;
-import com.guld.sciq.debate.processor.DebateCommentProcessor;
-import com.guld.sciq.debate.repository.DebateCommentRepository;
+import com.guld.sciq.debate.comment.dto.DebateCommentCreateDto;
+import com.guld.sciq.debate.comment.dto.DebateCommentDto;
+import com.guld.sciq.debate.comment.processor.DebateCommentProcessor;
+import com.guld.sciq.debate.comment.repository.DebateCommentRepository;
+import com.guld.sciq.debate.comment.service.DebateCommentService;
+import com.guld.sciq.debate.dto.DebateCommentUpdateDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +21,8 @@ public class DebateCommentServiceImpl implements DebateCommentService {
     private final DebateCommentRepository debateCommentRepository;
 
     @Override
-    public DebateCommentDto createComment(DebateCommentCreateDto createDto, Long debateId, Long userId) {
-        return debateCommentProcessor.createComment(createDto, debateId, userId);
+    public DebateCommentDto createComment(DebateCommentCreateDto createDto, Long debateId, Long userId, String userNickname) {
+        return debateCommentProcessor.createComment(createDto, debateId, userId,userNickname);
     }
 
     @Override
@@ -29,7 +31,7 @@ public class DebateCommentServiceImpl implements DebateCommentService {
     }
 
     @Override
-    public DebateCommentDto updateComment(Long commentId, DebateCommentCreateDto updateDto, Long userId) {
+    public DebateCommentDto updateComment(Long commentId, DebateCommentUpdateDto updateDto, Long userId) {
         return debateCommentProcessor.updateComment(commentId, updateDto, userId);
     }
 

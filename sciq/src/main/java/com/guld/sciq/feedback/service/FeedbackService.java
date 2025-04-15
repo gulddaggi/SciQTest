@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FeedbackService {
     // 기본 CRUD
-    FeedbackDto createFeedback(FeedbackCreateDto createDto, Long userId, Long questionId, Long debateId);
+    FeedbackDto createFeedback(FeedbackCreateDto createDto, Long userId);
     FeedbackDto getFeedback(Long feedbackId);
     FeedbackDto updateFeedback(Long feedbackId, FeedbackUpdateDto updateDto, Long userId);
     void deleteFeedback(Long feedbackId, Long userId);

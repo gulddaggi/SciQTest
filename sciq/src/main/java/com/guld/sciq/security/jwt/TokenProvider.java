@@ -31,6 +31,7 @@ public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String USER_ID = "id";
     private static final String USER_EMAIL = "email";
+    private static final String USER_NICKNAME = "nickname";
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
@@ -70,6 +71,7 @@ public class TokenProvider {
         claims.put(AUTHORITIES_KEY, authorities);
         claims.put(USER_ID, userPrincipal.getId());
         claims.put(USER_EMAIL, userPrincipal.getEmail());
+        claims.put(USER_NICKNAME, userPrincipal.getNickName());
         claims.setSubject(userPrincipal.getEmail());
         log.debug("Claims 설정 완료: {}", claims);
 
@@ -130,6 +132,7 @@ public class TokenProvider {
         UserPrincipal principal = new UserPrincipal(
                 Long.parseLong(claims.get(USER_ID).toString()),
                 claims.get(USER_EMAIL).toString(),
+                claims.get(USER_NICKNAME).toString(),
                 "",
                 authorities
         );

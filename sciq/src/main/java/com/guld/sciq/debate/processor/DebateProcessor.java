@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.guld.sciq.common.error.ErrorMessage;
 import com.guld.sciq.debate.dto.DebateCreateDto;
 import com.guld.sciq.debate.dto.DebateDto;
 import com.guld.sciq.debate.dto.DebateUpdateDto;
@@ -99,7 +100,10 @@ public class DebateProcessor {
     }
     
     @Transactional
-    public void extendDebate(Long id, Integer addMinutes) {
+    public void extendDebate(Long id, Integer addMinutes, Long userId) {
+        Debate debate = fetchDebate(id);
+        verifyOwner(debate, userId);
+        
         if (addMinutes == null || addMinutes <= 0)
             throw new IllegalArgumentException(ErrorMessage.DEBATE_DURATION_INVALID);
         
@@ -149,7 +153,7 @@ public class DebateProcessor {
         if (isBlank(d.description()))
             throw new IllegalArgumentException(ErrorMessage.DEBATE_CONTENT_REQUIRED);
         if (d.scienceDiscipline() == null)
-            throw new IllegalArgumentException(ErrorMessage.DEBATE_CATEGORY_REQUIRED);
+            throw new IllegalArgumentException(ErrorMessage.DEBATE_SCIENCE__REQUIRED);
     }
     
     private void validateUpdate(DebateUpdateDto d) {

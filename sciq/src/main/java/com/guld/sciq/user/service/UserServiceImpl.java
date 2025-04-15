@@ -1,6 +1,6 @@
 package com.guld.sciq.user.service;
 
-import com.guld.sciq.global.exception.ErrorMessage;
+import com.guld.sciq.common.error.ErrorMessage;
 import com.guld.sciq.global.exception.UserNotFoundException;
 import com.guld.sciq.user.dto.UserCreateDto;
 import com.guld.sciq.user.dto.UserDto;
@@ -14,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -129,7 +131,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User getReferenceByEmail(String email) {
-        return entityManager.getReference(User.class, findByEmail(email).getId());
+        return userRepository.getReferenceById(findByEmail(email).getId());
     }
 
     @Override
@@ -156,6 +158,29 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new RuntimeException(ErrorMessage.USER_PROFILE_UPDATE_FAILED, e);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(UserDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
+        return UserDto.from(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUND));
     }
 
     private void validateUserCreateDto(UserCreateDto dto) {
