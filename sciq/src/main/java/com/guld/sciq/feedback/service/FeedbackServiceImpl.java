@@ -41,7 +41,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void markAsHelpful(Long feedbackId, Long userId) {
-        feedbackProcessor.markAsHelpful(feedbackId, userId);
+        //TODO: 유저도 트래킹 할건지? 한번만 가능하게 할건지?
+        feedbackProcessor.markHelpful(feedbackId);
     }
     
     @Override
