@@ -4,11 +4,16 @@ import com.guld.sciq.config.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "question_comment_tb")
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuestionComment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +28,8 @@ public class QuestionComment extends BaseEntity {
 
     @Column
     private String content;
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }
